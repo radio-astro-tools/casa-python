@@ -1,5 +1,8 @@
+CASA Python executable wrapper
+==============================
+
 About
-=====
+-----
 
 ``casa-python`` is a simple script that allows users to invoke the 
 Python executable for `CASA <http://casa.nrao.edu/>`_ as one would 
@@ -11,13 +14,13 @@ instead use:
     casa-python setup.py install
 
 Installation
-============
+------------
 
 To install, just place the casa-python script in any directory that is in your
 ``$PATH``.
 
 Example
-=======
+-------
 
 To install Astropy into CASA, you can download the latest stable release 
 from the `Astropy homepage <http://www.astropy.org/>`_ then expand it 
@@ -55,14 +58,14 @@ Astropy should be available:
     CASA <3>: 
 
 Known limitations
-=================
+-----------------
 
 The wrapper script currently assumes that CASA.app is located inside
 /Applications, and that casapy uses Python 2.6. The wrapper will need to be
 updated once CASA switches to a more recent version of Python.
 
 Credits
-=======
+-------
 
 The wrapper was prepared by Thomas Robitaille (@astrofrog) based on code from
 CASA.
