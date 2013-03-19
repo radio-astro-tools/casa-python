@@ -5,7 +5,7 @@ About
 -----
 
 ``casa-python`` is a simple script that allows users to invoke the 
-Python executable for `CASA <http://casa.nrao.edu/>`_ as one would 
+Python executable for [CASA](http://casa.nrao.edu/) as one would 
 invoke a normal Python executable. This allows users to easily install 
 third-party libraries into CASA. To do this, whenever installation 
 instructions require you to run for example ``python setup.py install``, 
@@ -16,14 +16,15 @@ instead use:
 Installation
 ------------
 
-To install, just place the casa-python script in any directory that is in your
-``$PATH``.
+To install, download the latest version of the ``casa-python`` script
+from [here](https://raw.github.com/astrofrog/casa_python/master/casa-python)
+and place it in any directory that is in your ``$PATH``.
 
 Example
 -------
 
 To install Astropy into CASA, you can download the latest stable release 
-from the `Astropy homepage <http://www.astropy.org/>`_ then expand it 
+from the [Astropy homepage](http://www.astropy.org/) then expand it 
 and install it with e.g.:
 
     tar xvzf astropy-0.2.tar.gz
