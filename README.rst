@@ -10,6 +10,12 @@ instead use:
 
     casa-python setup.py install
 
+Installation
+============
+
+To install, just place the casa-python script in any directory that is in your
+``$PATH``.
+
 Example
 =======
 
