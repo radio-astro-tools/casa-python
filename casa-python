@@ -1,0 +1,20 @@
+#! /bin/bash
+
+prefix=/Applications/CASA.app/Contents
+
+p_root=${prefix}/Frameworks/Python.framework/Versions/2.6
+p_bind=${p_root}/MacOS
+p_libd=${p_root}/lib/python2.6
+p_path=${p_bind}:${p_libd}:${p_libd}/plat-mac:${p_libd}/plat-darwin
+p_path=${p_path}:${p_bind}/lib-scriptpackages:${p_libd}/lib-tk
+p_path=${p_path}:${p_libd}/lib-dynload:${p_libd}/site-packages
+p_path=${p_path}:${p_libd}/site-packages/Numeric:${p_libd}/site-packages/PyObjC
+p_path=${prefix}/Resources/python:${p_path}
+
+export PYTHONHOME=${p_root}
+export PYTHONPATH=${p_path}
+export PYTHONEXECUTABLE=${p_root}/Resources/Python.app/Contents/MacOS/Python
+
+export DYLD_FRAMEWORK_PATH="${prefix}/Frameworks"
+
+exec -a pythonw ${prefix}/MacOS/pythonw -W ignore::DeprecationWarning "$@"
