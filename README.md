@@ -17,7 +17,7 @@ Installation
 ------------
 
 To install, download the latest version of the ``casa-python`` script
-from [here](https://raw.github.com/astrofrog/casa_python/master/casa-python)
+from [here](https://raw.github.com/astrofrog/casa-python/master/casa-python)
 and place it in any directory that is in your ``$PATH``.
 
 Example
