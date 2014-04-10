@@ -13,23 +13,31 @@ instead use:
 
     casa-python setup.py install
 
+We also provide an interface to the ``pip`` package manager, ``casa-pip``. One can install
+any\* python package this way:
+
+    casa-pip install requests
+
 Installation
 ------------
 
-To install, download the latest version of the ``casa-python`` script
-from [here](https://raw.github.com/astrofrog/casa-python/master/casa-python)
-and place it in any directory that is in your ``$PATH``.
+To install, download the latest version of the ``casa-python`` script from
+[here](https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip_linux.py)
+and run it.
+
+    python setup_casapy_pip_linux.py
+
+or, alternatively, a one-liner:
+
+    curl https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip_linux.py | python 
 
 Example
 -------
 
-To install Astropy into CASA, you can download the latest stable release 
-from the [Astropy homepage](http://www.astropy.org/) then expand it 
-and install it with e.g.:
+To install Astropy into CASA, assuming you have the appropriate compilers on
+your system, you can run
 
-    tar xvzf astropy-0.2.tar.gz
-    cd astropy-0.2
-    casa-python setup.py install
+    casa-pip install astropy
 
 Once the installation has completed, you can start up CASA as usual, and 
 Astropy should be available:
@@ -58,15 +66,9 @@ Astropy should be available:
 
     CASA <3>: 
 
-Known limitations
------------------
-
-The wrapper script currently assumes that CASA.app is located inside
-/Applications, and that casapy uses Python 2.6. The wrapper will need to be
-updated once CASA switches to a more recent version of Python.
 
 Credits
 -------
 
 The wrapper was prepared by Thomas Robitaille (@astrofrog) based on code from
-CASA.
+CASA, with contributions from Adam Leroy and Adam Ginsburg (@keflavich).
