@@ -13,7 +13,7 @@ from urllib import urlopen
 
 USER_DIR = os.path.join(os.path.expanduser('~'), '.casa')
 BIN_DIR = os.path.join(os.path.expanduser('~'), '.casa', 'bin')
-USER_SITE = os.path.join(os.path.expanduser('~'), '.casa', 'lib', 'python2.6', 'site-packages')
+USER_SITE = os.path.join(os.path.expanduser('~'), '.casa', 'lib', 'python{pv}', 'site-packages')
 
 PIP_URL = "https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz"
 PIP_MD5 = "834b2904f92d46aaa333267fb1c922bb"
@@ -69,7 +69,7 @@ def get_python_path_linux():
         version = "2.7"
         path = grandparent
     elif os.path.exists(os.path.join(parent, 'lib64', 'python2.6')):
-        version = "2.7"
+        version = "2.6"
         path = parent
     elif os.path.exists(os.path.join(parent, 'lib64', 'python2.7')):
         version = "2.7"
@@ -220,7 +220,7 @@ $HOME/.casa/bin/casa-python $HOME/.casa/bin/pip $* --user
     make_executable(os.path.join(BIN_DIR, 'casa-pip'))
 
 
-def write_init():
+def write_init(pv="2.7"):
 
     print("Creating init.py script...")
 
@@ -230,7 +230,7 @@ site.addsitedir("{site_packages}")
     """
 
     with open(os.path.join(USER_DIR, 'init.py'), 'a') as f:
-        f.write(TEMPLATE_INIT.format(site_packages=USER_SITE))
+        f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv)))
 
 
 def add_bin_to_path():
@@ -256,6 +256,6 @@ if __name__ == "__main__":
     install_package(pv=python_version, packagename='pip', url=PIP_URL,
                     md5_checksum=PIP_MD5)
     write_casa_pip()
-    write_init()
+    write_init(pv=python_version)
 
     add_bin_to_path()
