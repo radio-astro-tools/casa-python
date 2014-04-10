@@ -38,7 +38,13 @@ def make_executable(filename):
 
 
 def get_casapy_path():
-    return os.path.realpath(find_executable('casapy'))
+    casapy_path = find_executable('casapy')
+    if casapy_path is None:
+        raise SystemError("Could not locate casapy command")
+    casapy_path = os.path.realpath(casapy_path)
+    if not os.path.exists(casapy_path):
+        raise SystemError("The casapy command does not point to a valid CASA installation")
+    return casapy_path
 
 
 def get_python_version_mac():
