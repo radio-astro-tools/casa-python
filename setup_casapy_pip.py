@@ -230,3 +230,5 @@ if __name__ == "__main__":
     install_pip(pv=python_version)
     write_casa_pip()
     write_init()
+
+    add_bin_to_path()
