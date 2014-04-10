@@ -18,6 +18,9 @@ USER_SITE = os.path.join(os.path.expanduser('~'), '.casa', 'lib', 'python2.6', '
 PIP_URL = "https://pypi.python.org/packages/source/p/pip/pip-1.5.4.tar.gz"
 PIP_MD5 = "834b2904f92d46aaa333267fb1c922bb"
 
+SETUPTOOLS_URL = "https://pypi.python.org/packages/source/s/setuptools/setuptools-3.4.3.tar.gz"
+SETUPTOOLS_MD5 = "284bf84819c0f6735c853619d1a54955"
+
 
 def mkdir_p(path):
     # Create a directory using mkdir -p
@@ -62,53 +65,53 @@ def get_python_version_linux():
     return version
 
 
-def install_pip(pv="2.7"):
+def install_package(pv="2.7",packagename='pip',url=PIP_URL,md5_checksum=PIP_MD5):
 
-    print("Downloading pip...")
+    print("Downloading {0}...".format(packagename))
 
     # Create temporary directory
 
     tmpdir = tempfile.mkdtemp()
     os.chdir(tmpdir)
 
-    # Download pip and expand
+    # Download module and expand
 
-    content = urlopen(PIP_URL).read()
+    content = urlopen(url).read()
 
-    if md5(content).hexdigest() != PIP_MD5:
-        raise ValueError("pip checksum does not match")
+    if md5(content).hexdigest() != md5_checksum:
+        raise ValueError("checksum does not match")
 
-    with open(os.path.basename(PIP_URL), 'wb') as f:
+    with open(os.path.basename(url), 'wb') as f:
         f.write(content)
 
     # Prepare installation script
 
-    print("Installing pip...")
+    print("Installing {0}...".format(packagename))
 
     site_packages = os.path.expanduser('~/.casa/lib/python{pv}/site-packages'.format(pv=pv))
     mkdir_p(site_packages)
 
-    PIP_INSTALL = """
+    PKG_INSTALL = """
 #!/bin/bash
 export PYTHONUSERBASE=$HOME/.casa
 export PATH=$HOME/.casa/bin:$PATH
-tar xvzf {pip_filename}
-cd {pip_name}
+tar xvzf {pkg_filename}
+cd {pkg_name}
 casa-python setup.py install --prefix=$HOME/.casa
     """
 
-    pip_filename = os.path.basename(PIP_URL)
-    pip_name = pip_filename.rsplit('.', 2)[0]
+    pkg_filename = os.path.basename(url)
+    pkg_name = pkg_filename.rsplit('.', 2)[0]
 
-    with open('install_pip.sh', 'w') as f:
-        f.write(PIP_INSTALL.format(pip_filename=pip_filename, pip_name=pip_name))
+    with open('install_pkg.sh', 'w') as f:
+        f.write(PKG_INSTALL.format(pkg_filename=pkg_filename, pkg_name=pkg_name))
 
-    make_executable('install_pip.sh')
+    make_executable('install_pkg.sh')
 
     # Need to use subprocess instead
-    retcode = os.system('./install_pip.sh')
+    retcode = os.system('./install_pkg.sh')
     if retcode != 0:
-        raise SystemError("pip installation failed!")
+        raise SystemError("{0} installation failed!".format(packagename))
 
 
 def write_casa_python_mac(pv="2.7"):
@@ -227,7 +230,11 @@ if __name__ == "__main__":
         python_version = get_python_version_linux()
         write_casa_python_linux(pv=python_version)
 
-    install_pip(pv=python_version)
+
+    install_package(pv=python_version, packagename='setuptools',
+                    url=SETUPTOOLS_URL, md5_checksum=SETUPTOOLS_MD5)
+    install_package(pv=python_version, packagename='pip', url=PIP_URL,
+                    md5_checksum=PIP_MD5)
     write_casa_pip()
     write_init()
 
