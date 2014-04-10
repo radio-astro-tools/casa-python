@@ -21,6 +21,12 @@ any\* python package this way:
 Installation
 ------------
 
+The installation requires that you have CASA installed.  You can check this by doing 
+
+    $ which casa
+
+at the command prompt.  You should see the path to the file.
+
 To install, download the latest version of the ``casa-python`` script from
 [here](https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py)
 and run it.  This should be your *system* python, not *CASA* python (which
