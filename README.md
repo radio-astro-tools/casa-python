@@ -67,6 +67,11 @@ Astropy should be available:
     CASA <3>: 
 
 
+Caveats
+-------
+\*: Packages requiring c-compiled code rely on the existence of a C-compiler on
+your unix path.
+
 Credits
 -------
 
