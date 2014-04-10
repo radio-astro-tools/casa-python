@@ -29,7 +29,7 @@ and run it.
 
 or, alternatively, a one-liner:
 
-    curl https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip_linux.py | python 
+    curl https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py | python 
 
 Example
 -------
