@@ -22,10 +22,10 @@ Installation
 ------------
 
 To install, download the latest version of the ``casa-python`` script from
-[here](https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip_linux.py)
+[here](https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py)
 and run it.
 
-    python setup_casapy_pip_linux.py
+    python setup_casapy_pip.py
 
 or, alternatively, a one-liner:
 
