@@ -60,9 +60,14 @@ def get_python_version_mac():
 
 def get_python_version_linux():
     casapy_path = get_casapy_path()
-    parent = os.path.dirname(os.path.dirname(casapy_path))
-    if os.path.exists(os.path.join(parent, 'lib64', 'python2.6')):
+    parent = os.path.dirname(casapy_path)
+    grandparent = os.path.dirname(parent)
+    if os.path.exists(os.path.join(grandparent, 'lib64', 'python2.6')):
         version = "2.6"
+    elif os.path.exists(os.path.join(grandparent, 'lib64', 'python2.7')):
+        version = "2.7"
+    elif os.path.exists(os.path.join(parent, 'lib64', 'python2.6')):
+        version = "2.7"
     elif os.path.exists(os.path.join(parent, 'lib64', 'python2.7')):
         version = "2.7"
     else:
