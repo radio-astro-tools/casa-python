@@ -98,7 +98,7 @@ casa-python setup.py install --prefix=$HOME/.casa
     """
 
     pip_filename = os.path.basename(PIP_URL)
-    pip_name = pip_filename.rsplit('.',2)[0]
+    pip_name = pip_filename.rsplit('.', 2)[0]
 
     with open('install_pip.sh', 'w') as f:
         f.write(PIP_INSTALL.format(pip_filename=pip_filename, pip_name=pip_name))
