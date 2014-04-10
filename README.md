@@ -23,7 +23,8 @@ Installation
 
 To install, download the latest version of the ``casa-python`` script from
 [here](https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py)
-and run it.
+and run it.  This should be your *system* python, not *CASA* python (which
+should be on your path by default).
 
     python setup_casapy_pip.py
 
