@@ -154,7 +154,7 @@ PPATH=$INSTALLPATH/Resources/python:$PPATH
 export PYTHONUSERBASE=$HOME/.casa
 
 export PYTHONHOME=$PROOT
-export PYTHONPATH=$PPATH
+export PYTHONPATH={user_site}:$PPATH
 export PYTHONEXECUTABLE=$PROOT/Resources/Python.app/Contents/MacOS/Python
 
 export DYLD_FRAMEWORK_PATH="$INSTALLPATH/Frameworks"
@@ -167,7 +167,7 @@ exec -a pythonw $INSTALLPATH/MacOS/pythonw -W ignore::DeprecationWarning "$@"
     casapy_path = os.path.dirname(os.path.dirname(get_casapy_path()))
 
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
-        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv))
+        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv, user_site=USER_SITE.format(pv=pv)))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
 
