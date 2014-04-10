@@ -197,7 +197,8 @@ exec $INSTALLPATH/lib64/casapy/bin/python $*
 
     mkdir_p(BIN_DIR)
 
-    vers,casapy_path = get_python_version_linux()
+    # vers is throwaway here
+    vers,casapy_path = get_python_path_linux()
 
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
         f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv))
