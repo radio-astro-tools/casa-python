@@ -34,9 +34,10 @@ should be on your path by default).
 
     python setup_casapy_pip.py
 
-or, alternatively, a one-liner:
+or, alternatively:
 
-    curl https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py | python 
+    curl -O https://raw.githubusercontent.com/radio-tools/casa-python/master/setup_casapy_pip.py
+    python setup_casapy_pip.py
 
 You should then add `$HOME/.casa/bin/` to your path.
 
