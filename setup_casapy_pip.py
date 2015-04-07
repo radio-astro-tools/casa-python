@@ -36,9 +36,12 @@ def make_executable(filename):
     st = os.stat(filename)
     os.chmod(filename, st.st_mode | stat.S_IEXEC)
 
+def find_osx_executable(fpath='/Applications/CASA.app/Contents/MacOS/casapy'):
+    if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
+        return fpath
 
 def get_casapy_path():
-    casapy_path = find_executable('casapy')
+    casapy_path = find_executable('casapy') or find_osx_executable()
     if casapy_path is None:
         raise SystemError("Could not locate casapy command")
     casapy_path = os.path.realpath(casapy_path)
