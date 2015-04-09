@@ -64,17 +64,17 @@ def get_python_path_linux():
     grandparent = os.path.dirname(parent)
     version = None
     for lib in ('lib64','lib'):
-        if os.path.exists(os.path.join(grandparent, lib, 'python2.6')):
-            version = "2.6"
-            path = grandparent
-        elif os.path.exists(os.path.join(grandparent, lib, 'python2.7')):
+        if os.path.exists(os.path.join(grandparent, lib, 'python2.7')):
             version = "2.7"
             path = grandparent
-        elif os.path.exists(os.path.join(parent, lib, 'python2.6')):
+        elif os.path.exists(os.path.join(grandparent, lib, 'python2.6')):
             version = "2.6"
-            path = parent
+            path = grandparent
         elif os.path.exists(os.path.join(parent, lib, 'python2.7')):
             version = "2.7"
+            path = parent
+        elif os.path.exists(os.path.join(parent, lib, 'python2.6')):
+            version = "2.6"
             path = parent
         if version is not None:
             break
