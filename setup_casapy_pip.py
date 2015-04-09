@@ -157,6 +157,7 @@ PPATH=$INSTALLPATH/Resources/python:$PPATH
 export PYTHONUSERBASE=$HOME/.casa
 
 export PYTHONHOME=$PROOT
+export PYTHONPATH={user_site2}:$PPATH
 export PYTHONPATH={user_site}:$PPATH
 export PYTHONEXECUTABLE=$PROOT/Resources/Python.app/Contents/MacOS/Python
 
@@ -169,8 +170,15 @@ exec -a pythonw $INSTALLPATH/MacOS/pythonw -W ignore::DeprecationWarning "$@"
 
     casapy_path = os.path.dirname(os.path.dirname(get_casapy_path()))
 
+    # On some installs of CASA, the user-site uses a python-version-independent
+    # site-packages directory, which has something to do with the way USER_SITE
+    # is set for OSX Frameworks.  We therefore add a second directory to the
+    # path BEHIND the "correct" python version path.
+
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
-        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv, user_site=USER_SITE.format(pv=pv)))
+        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
+                                       user_site2=USER_SITE.format(pv=''),
+                                       user_site=USER_SITE.format(pv=pv)))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
 
