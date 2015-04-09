@@ -62,19 +62,23 @@ def get_python_path_linux():
     casapy_path = get_casapy_path()
     parent = os.path.dirname(casapy_path)
     grandparent = os.path.dirname(parent)
-    if os.path.exists(os.path.join(grandparent, 'lib64', 'python2.6')):
-        version = "2.6"
-        path = grandparent
-    elif os.path.exists(os.path.join(grandparent, 'lib64', 'python2.7')):
-        version = "2.7"
-        path = grandparent
-    elif os.path.exists(os.path.join(parent, 'lib64', 'python2.6')):
-        version = "2.6"
-        path = parent
-    elif os.path.exists(os.path.join(parent, 'lib64', 'python2.7')):
-        version = "2.7"
-        path = parent
-    else:
+    version = None
+    for lib in ('lib64','lib'):
+        if os.path.exists(os.path.join(grandparent, lib, 'python2.6')):
+            version = "2.6"
+            path = grandparent
+        elif os.path.exists(os.path.join(grandparent, lib, 'python2.7')):
+            version = "2.7"
+            path = grandparent
+        elif os.path.exists(os.path.join(parent, lib, 'python2.6')):
+            version = "2.6"
+            path = parent
+        elif os.path.exists(os.path.join(parent, lib, 'python2.7')):
+            version = "2.7"
+            path = parent
+        if version is not None:
+            break
+    if version is None:
         raise ValueError("Could not determine Python version")
     return version,path
 
@@ -166,8 +170,11 @@ exec -a pythonw $INSTALLPATH/MacOS/pythonw -W ignore::DeprecationWarning "$@"
 
     casapy_path = os.path.dirname(os.path.dirname(get_casapy_path()))
 
+    assert pv
+
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
-        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv, user_site=USER_SITE.format(pv=pv)))
+        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
+                                       user_site=USER_SITE.format(pv=pv)))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
 
@@ -229,6 +236,7 @@ import site
 site.addsitedir("{site_packages}")
     """
 
+    assert pv
     with open(os.path.join(USER_DIR, 'init.py'), 'a') as f:
         f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv)))
 
