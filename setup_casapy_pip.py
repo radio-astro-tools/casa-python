@@ -199,17 +199,20 @@ export PYTHONPATH=$INSTALLPATH/{lib}/python{pv}/site-packages:$PYTHONPATH
 export PYTHONPATH=$INSTALLPATH/{lib}/python{pv}/heuristics:$PYTHONPATH
 export PYTHONPATH=$INSTALLPATH/{lib}/python{pv}:$PYTHONPATH
 
-exec $INSTALLPATH/{lib}/casapy/bin/python $*
+exec $INSTALLPATH/{lib}/{lib_casapy}/bin/python $*
     """
 
     mkdir_p(BIN_DIR)
 
     # vers is throwaway here
     vers,casapy_path,lib = get_python_path_linux()
+    # parent directory of 'bin' changed from casapy -> casa from 4.2 to 4.3?
+    lib_casapy = {'lib64':'casapy',
+                  'lib' : 'casa'}
 
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
         f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
-                                       lib=lib))
+                                       lib=lib, lib_casapy=lib_casapy))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
 
