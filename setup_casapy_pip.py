@@ -212,7 +212,7 @@ exec $INSTALLPATH/{lib}/{lib_casapy}/bin/python $*
 
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
         f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
-                                       lib=lib, lib_casapy=lib_casapy))
+                                       lib=lib, lib_casapy=lib_casapy[lib]))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
 
