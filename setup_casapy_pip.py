@@ -62,24 +62,28 @@ def get_python_path_linux():
     casapy_path = get_casapy_path()
     parent = os.path.dirname(casapy_path)
     grandparent = os.path.dirname(parent)
-    if os.path.exists(os.path.join(grandparent, 'lib64', 'python2.6')):
-        version = "2.6"
-        path = grandparent
-    elif os.path.exists(os.path.join(grandparent, 'lib64', 'python2.7')):
-        version = "2.7"
-        path = grandparent
-    elif os.path.exists(os.path.join(parent, 'lib64', 'python2.6')):
-        version = "2.6"
-        path = parent
-    elif os.path.exists(os.path.join(parent, 'lib64', 'python2.7')):
-        version = "2.7"
-        path = parent
-    else:
+    version = None
+    for lib in ('lib64','lib'):
+        if os.path.exists(os.path.join(grandparent, lib, 'python2.7')):
+            version = "2.7"
+            path = grandparent
+        elif os.path.exists(os.path.join(grandparent, lib, 'python2.6')):
+            version = "2.6"
+            path = grandparent
+        elif os.path.exists(os.path.join(parent, lib, 'python2.7')):
+            version = "2.7"
+            path = parent
+        elif os.path.exists(os.path.join(parent, lib, 'python2.6')):
+            version = "2.6"
+            path = parent
+        if version is not None:
+            break
+    if version is None:
         raise ValueError("Could not determine Python version")
-    return version,path
+    return version,path,lib
 
 def get_python_version_linux():
-    version,casapy_parent_path = get_python_path_linux()
+    version,casapy_parent_path,lib = get_python_path_linux()
     print("Determined Python version in CASA... {0}".format(version))
     return version
 
@@ -167,7 +171,8 @@ exec -a pythonw $INSTALLPATH/MacOS/pythonw -W ignore::DeprecationWarning "$@"
     casapy_path = os.path.dirname(os.path.dirname(get_casapy_path()))
 
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
-        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv, user_site=USER_SITE.format(pv=pv)))
+        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
+                                       user_site=USER_SITE.format(pv=pv)))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
 
@@ -181,27 +186,31 @@ def write_casa_python_linux(pv="2.7"):
 
 INSTALLPATH={casapy_path}
 
-export LD_LIBRARY_PATH=$INSTALLPATH/lib64:/lib64:/usr/lib64:$LD_LIBRARY_PATH
-export LDFLAGS="-L$INSTALLPATH/lib64/"
+export LD_LIBRARY_PATH=$INSTALLPATH/{lib}:/{lib}:/usr/{lib}:$LD_LIBRARY_PATH
+export LDFLAGS="-L$INSTALLPATH/{lib}/"
 
 export PYTHONHOME=$INSTALLPATH
 
 export PYTHONUSERBASE=$HOME/.casa
 
-export PYTHONPATH=$INSTALLPATH/lib64/python{pv}/site-packages:$PYTHONPATH
-export PYTHONPATH=$INSTALLPATH/lib64/python{pv}/heuristics:$PYTHONPATH
-export PYTHONPATH=$INSTALLPATH/lib64/python{pv}:$PYTHONPATH
+export PYTHONPATH=$INSTALLPATH/{lib}/python{pv}/site-packages:$PYTHONPATH
+export PYTHONPATH=$INSTALLPATH/{lib}/python{pv}/heuristics:$PYTHONPATH
+export PYTHONPATH=$INSTALLPATH/{lib}/python{pv}:$PYTHONPATH
 
-exec $INSTALLPATH/lib64/casapy/bin/python $*
+exec $INSTALLPATH/{lib}/{lib_casapy}/bin/python $*
     """
 
     mkdir_p(BIN_DIR)
 
     # vers is throwaway here
-    vers,casapy_path = get_python_path_linux()
+    vers,casapy_path,lib = get_python_path_linux()
+    # parent directory of 'bin' changed from casapy -> casa from 4.2 to 4.3?
+    lib_casapy = {'lib64':'casapy',
+                  'lib' : 'casa'}
 
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
-        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv))
+        f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
+                                       lib=lib, lib_casapy=lib_casapy[lib]))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
 
