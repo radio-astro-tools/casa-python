@@ -170,8 +170,6 @@ exec -a pythonw $INSTALLPATH/MacOS/pythonw -W ignore::DeprecationWarning "$@"
 
     casapy_path = os.path.dirname(os.path.dirname(get_casapy_path()))
 
-    assert pv
-
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
         f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
                                        user_site=USER_SITE.format(pv=pv)))
@@ -240,7 +238,6 @@ import site
 site.addsitedir("{site_packages}")
     """
 
-    assert pv
     with open(os.path.join(USER_DIR, 'init.py'), 'a') as f:
         f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv)))
 
