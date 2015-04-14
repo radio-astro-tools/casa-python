@@ -246,10 +246,12 @@ def write_init(pv="2.7"):
     TEMPLATE_INIT = """
 import site
 site.addsitedir("{site_packages}")
+site.addsitedir("{site_packages_noversion}")
     """
 
     with open(os.path.join(USER_DIR, 'init.py'), 'a') as f:
-        f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv)))
+        f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv),
+                                     site_packages_noversion=USER_SITE.format('')))
 
 
 def add_bin_to_path():
