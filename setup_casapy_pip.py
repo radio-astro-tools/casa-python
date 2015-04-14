@@ -36,9 +36,12 @@ def make_executable(filename):
     st = os.stat(filename)
     os.chmod(filename, st.st_mode | stat.S_IEXEC)
 
+def find_osx_executable(fpath='/Applications/CASA.app/Contents/MacOS/casapy'):
+    if os.path.isfile(fpath) and os.access(fpath, os.X_OK):
+        return fpath
 
 def get_casapy_path():
-    casapy_path = find_executable('casapy')
+    casapy_path = find_executable('casapy') or find_osx_executable()
     if casapy_path is None:
         raise SystemError("Could not locate casapy command")
     casapy_path = os.path.realpath(casapy_path)
@@ -158,6 +161,7 @@ PPATH=$INSTALLPATH/Resources/python:$PPATH
 export PYTHONUSERBASE=$HOME/.casa
 
 export PYTHONHOME=$PROOT
+export PYTHONPATH={user_site2}:$PPATH
 export PYTHONPATH={user_site}:$PPATH
 export PYTHONEXECUTABLE=$PROOT/Resources/Python.app/Contents/MacOS/Python
 
@@ -170,8 +174,14 @@ exec -a pythonw $INSTALLPATH/MacOS/pythonw -W ignore::DeprecationWarning "$@"
 
     casapy_path = os.path.dirname(os.path.dirname(get_casapy_path()))
 
+    # On some installs of CASA, the user-site uses a python-version-independent
+    # site-packages directory, which has something to do with the way USER_SITE
+    # is set for OSX Frameworks.  We therefore add a second directory to the
+    # path BEHIND the "correct" python version path.
+
     with open(os.path.join(BIN_DIR, 'casa-python'), 'w') as f:
         f.write(TEMPLATE_PYTHON.format(casapy_path=casapy_path, pv=pv,
+                                       user_site2=USER_SITE.format(pv=''),
                                        user_site=USER_SITE.format(pv=pv)))
 
     make_executable(os.path.join(BIN_DIR, 'casa-python'))
@@ -236,10 +246,12 @@ def write_init(pv="2.7"):
     TEMPLATE_INIT = """
 import site
 site.addsitedir("{site_packages}")
+site.addsitedir("{site_packages_noversion}")
     """
 
     with open(os.path.join(USER_DIR, 'init.py'), 'a') as f:
-        f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv)))
+        f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv),
+                                     site_packages_noversion=USER_SITE.format(pv='')))
 
 
 def add_bin_to_path():
