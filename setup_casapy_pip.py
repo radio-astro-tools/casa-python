@@ -251,7 +251,7 @@ site.addsitedir("{site_packages_noversion}")
 
     with open(os.path.join(USER_DIR, 'init.py'), 'a') as f:
         f.write(TEMPLATE_INIT.format(site_packages=USER_SITE.format(pv=pv),
-                                     site_packages_noversion=USER_SITE.format('')))
+                                     site_packages_noversion=USER_SITE.format(pv='')))
 
 
 def add_bin_to_path():
