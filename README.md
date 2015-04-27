@@ -79,8 +79,14 @@ Astropy should be available:
 
 Caveats
 -------
-\*: Packages requiring c-compiled code rely on the existence of a C-compiler on
+
+Packages requiring c-compiled code rely on the existence of a C-compiler on
 your unix path.
+
+Alternatives
+------------
+
+Rather than install packages into CASA, it is also possible (although a little hackier) to try and import CASA into your existing Python installation - see [here](http://newton.cx/~peter/2014/02/casa-in-python-without-casapy/) for more details.
 
 Credits
 -------
