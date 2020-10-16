@@ -1,6 +1,12 @@
 CASA Python executable wrapper
 ==============================
 
+The approach described below is deprecated.
+
+Instead, follow instructions here:
+https://docs.astropy.org/en/stable/install.html#installing-astropy-into-casa
+to install astropy or other packages into CASA.
+
 About
 -----
 
